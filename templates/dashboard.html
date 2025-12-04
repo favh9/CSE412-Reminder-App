@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="dashboard">
+  <h2>Welcome, {{ current_user.u_first_name }}</h2>
+  <a href="/logout">Logout</a>
+
+  <section class="form-section">
+    <h3 class="section-title">Add Reminder</h3>
+    <form id="reminder-form" enctype="multipart/form-data" class="form-stacked">
+      <input class="form-control" type="text" name="title" placeholder="Title" required><br>
+      <textarea class="form-control" name="description" placeholder="Description"></textarea><br>
+      <input class="form-control" type="datetime-local" name="due_time" required><br>
+      <input class="form-control" type="text" name="category" placeholder="Category (optional)"><br>
+      <input class="form-control color-control" type="color" name="category_color" value="#cccccc"><br>
+      <input class="form-control file-control" type="file" name="image" accept=".jpg,.jpeg,.png"><br>
+      <button class="btn btn-primary" type="submit">Add Reminder</button>
+    </form>
+  </section>
+
+  <h3 class="section-title">Your Reminders</h3>
+  <ul id="reminder-list" class="reminder-list">
+    {% for r in reminders %}
+      <li data-id="{{ r.r_id }}" class="reminder-card">
+        <div class="reminder-header">
+          <div class="reminder-title">{{ r.r_title }}</div>
+          {% if r.category %}
+            <span class="category-pill" style="background: {{ r.category.c_color or '#4b5563' }};">{{ r.category.c_name }}</span>
+          {% endif %}
+        </div>
+        <div class="reminder-meta">Due: {{ r.r_date }} {{ r.r_time.strftime('%H:%M') if r.r_time else '' }}</div>
+        <div class="reminder-description">{{ r.r_description }}</div>
+        {% if r.files %}
+          <div class="reminder-files">
+            {% for f in r.files %}
+              <div class="file-info">
+                <a href="{{ url_for('reminders.get_upload', filename=f.f_name) }}" target="_blank">{{ f.f_name }}</a>
+                <small>({{ f.f_type }}, {{ f.f_size }} bytes)</small>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% if r.notifications %}
+          <div class="reminder-notifications">
+            {% for n in r.notifications %}
+              <small>Notification: {{ n.n_description }} at {{ n.n_send_time }}</small><br>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div class="reminder-actions">
+          <button class="btn btn-secondary" onclick='renameReminder("{{ r.r_id }}", {{ r.r_title|tojson }});'>Rename</button>
+          <button class="btn btn-danger" onclick="deleteReminder('{{ r.r_id }}');">Delete</button>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+Flask
+psycopg[binary]
+flask-bcrypt
+Flask-Login
+Flask-Mail
+Flask-SQLAlchemy
+python-dotenv

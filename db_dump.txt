@@ -1,0 +1,455 @@
+--
+-- PostgreSQL database dump
+--
+
+\restrict oqiHLvBN6G1tcaXOfg0XAfL3bonWbVlEX7kDmKfGeosktZlGauBA7FH9LrZ70Lj
+
+-- Dumped from database version 15.14 (Homebrew)
+-- Dumped by pg_dump version 15.14 (Homebrew)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: category; Type: TABLE; Schema: public; Owner: favh
+--
+
+CREATE TABLE public.category (
+    c_id integer NOT NULL,
+    c_name text,
+    c_color text,
+    reminder_id integer NOT NULL
+);
+
+
+ALTER TABLE public.category OWNER TO favh;
+
+--
+-- Name: category_c_id_seq; Type: SEQUENCE; Schema: public; Owner: favh
+--
+
+CREATE SEQUENCE public.category_c_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.category_c_id_seq OWNER TO favh;
+
+--
+-- Name: category_c_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: favh
+--
+
+ALTER SEQUENCE public.category_c_id_seq OWNED BY public.category.c_id;
+
+
+--
+-- Name: file; Type: TABLE; Schema: public; Owner: favh
+--
+
+CREATE TABLE public.file (
+    f_id integer NOT NULL,
+    f_name text,
+    f_type text,
+    f_size integer,
+    reminder_id integer NOT NULL
+);
+
+
+ALTER TABLE public.file OWNER TO favh;
+
+--
+-- Name: file_f_id_seq; Type: SEQUENCE; Schema: public; Owner: favh
+--
+
+CREATE SEQUENCE public.file_f_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.file_f_id_seq OWNER TO favh;
+
+--
+-- Name: file_f_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: favh
+--
+
+ALTER SEQUENCE public.file_f_id_seq OWNED BY public.file.f_id;
+
+
+--
+-- Name: notification; Type: TABLE; Schema: public; Owner: favh
+--
+
+CREATE TABLE public.notification (
+    n_id integer NOT NULL,
+    n_description text,
+    n_send_time timestamp without time zone NOT NULL,
+    reminder_id integer NOT NULL
+);
+
+
+ALTER TABLE public.notification OWNER TO favh;
+
+--
+-- Name: notification_n_id_seq; Type: SEQUENCE; Schema: public; Owner: favh
+--
+
+CREATE SEQUENCE public.notification_n_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.notification_n_id_seq OWNER TO favh;
+
+--
+-- Name: notification_n_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: favh
+--
+
+ALTER SEQUENCE public.notification_n_id_seq OWNED BY public.notification.n_id;
+
+
+--
+-- Name: reminder; Type: TABLE; Schema: public; Owner: favh
+--
+
+CREATE TABLE public.reminder (
+    r_id integer NOT NULL,
+    r_title text,
+    r_description text,
+    r_date date,
+    r_time time without time zone,
+    r_status text,
+    user_id integer NOT NULL,
+    notified boolean DEFAULT false
+);
+
+
+ALTER TABLE public.reminder OWNER TO favh;
+
+--
+-- Name: reminder_r_id_seq; Type: SEQUENCE; Schema: public; Owner: favh
+--
+
+CREATE SEQUENCE public.reminder_r_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.reminder_r_id_seq OWNER TO favh;
+
+--
+-- Name: reminder_r_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: favh
+--
+
+ALTER SEQUENCE public.reminder_r_id_seq OWNED BY public.reminder.r_id;
+
+
+--
+-- Name: user; Type: TABLE; Schema: public; Owner: favh
+--
+
+CREATE TABLE public."user" (
+    u_id integer NOT NULL,
+    u_first_name text,
+    u_last_name text,
+    u_email text,
+    u_password text
+);
+
+
+ALTER TABLE public."user" OWNER TO favh;
+
+--
+-- Name: user_u_id_seq; Type: SEQUENCE; Schema: public; Owner: favh
+--
+
+CREATE SEQUENCE public.user_u_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_u_id_seq OWNER TO favh;
+
+--
+-- Name: user_u_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: favh
+--
+
+ALTER SEQUENCE public.user_u_id_seq OWNED BY public."user".u_id;
+
+
+--
+-- Name: category c_id; Type: DEFAULT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.category ALTER COLUMN c_id SET DEFAULT nextval('public.category_c_id_seq'::regclass);
+
+
+--
+-- Name: file f_id; Type: DEFAULT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.file ALTER COLUMN f_id SET DEFAULT nextval('public.file_f_id_seq'::regclass);
+
+
+--
+-- Name: notification n_id; Type: DEFAULT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.notification ALTER COLUMN n_id SET DEFAULT nextval('public.notification_n_id_seq'::regclass);
+
+
+--
+-- Name: reminder r_id; Type: DEFAULT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.reminder ALTER COLUMN r_id SET DEFAULT nextval('public.reminder_r_id_seq'::regclass);
+
+
+--
+-- Name: user u_id; Type: DEFAULT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public."user" ALTER COLUMN u_id SET DEFAULT nextval('public.user_u_id_seq'::regclass);
+
+
+--
+-- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: favh
+--
+
+COPY public.category (c_id, c_name, c_color, reminder_id) FROM stdin;
+1	Health	red	1
+2	Errands	blue	2
+3	Work	green	3
+4	Wellness	purple	4
+5	Work	green	5
+6	Social	orange	6
+7	School	teal	7
+8	Work	green	8
+9	Travel	blue	9
+10	Marketing	pink	10
+\.
+
+
+--
+-- Data for Name: file; Type: TABLE DATA; Schema: public; Owner: favh
+--
+
+COPY public.file (f_id, f_name, f_type, f_size, reminder_id) FROM stdin;
+1	prescription.jpg	image/jpeg	204800	1
+2	shopping_list.png	image/png	102400	2
+3	yoga_pose.jpg	image/jpeg	512000	4
+4	restaurant_booking.png	image/png	204800	6
+5	boarding_pass.png	image/png	256000	9
+6	flyer.jpg	image/jpeg	300000	10
+\.
+
+
+--
+-- Data for Name: notification; Type: TABLE DATA; Schema: public; Owner: favh
+--
+
+COPY public.notification (n_id, n_description, n_send_time, reminder_id) FROM stdin;
+1	Doctor appointment reminder	2025-12-10 08:00:00	1
+2	Meeting starts in 30 min	2025-12-05 08:30:00	3
+3	Yoga today	2025-12-06 16:30:00	4
+4	Flight check-in available	2025-12-08 19:00:00	9
+5	Marketing booth setup reminder	2025-12-10 10:00:00	10
+\.
+
+
+--
+-- Data for Name: reminder; Type: TABLE DATA; Schema: public; Owner: favh
+--
+
+COPY public.reminder (r_id, r_title, r_description, r_date, r_time, r_status, user_id, notified) FROM stdin;
+1	Doctor Visit	Annual check-up	2025-12-10	10:00:00	upcoming	1	f
+2	Buy groceries	Milk, eggs, bread	2025-12-04	17:30:00	completed	2	t
+3	Team Meeting	Project kickoff	2025-12-05	09:00:00	upcoming	3	f
+4	Yoga Session	Evening stretch	2025-12-06	18:30:00	upcoming	4	f
+5	Q4 Report Due	Submit final version	2025-12-07	11:00:00	overdue	5	t
+6	Dinner with Alex	Italian place	2025-12-04	20:00:00	completed	6	t
+7	School Form	Return signed form	2025-12-06	08:00:00	upcoming	7	f
+8	Submit Spec	Technical document	2025-12-08	14:00:00	upcoming	8	f
+9	Flight to NYC	Boarding at gate 22	2025-12-09	07:45:00	upcoming	9	f
+10	Marketing Event	Setup booth	2025-12-10	12:00:00	upcoming	10	f
+\.
+
+
+--
+-- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: favh
+--
+
+COPY public."user" (u_id, u_first_name, u_last_name, u_email, u_password) FROM stdin;
+1	alpha	alpha	alpha@example.com	$2b$12$Qapun8c8ZT3FN6FS3TSY2./FBMFWHuCw/qZ5xpauT.46pKvqzaQ76
+2	beta	beta	beta@example.com	$2b$12$NVX.6dcwgK6e1rMZ24jwW.4V2SIl.7.b8dyLT6U8AgSLR/FodeYd2
+4	delta	delta	delta@example.com	$2b$12$6QS8a89EDz0OD3HeZ2KYMu05/zkUSPZmHDSYx9Om9roBEkcbyKydm
+5	echo	echo	echo@example.com	$2b$12$VPaxCTA7YG5kOQmvIykfLuYxCYx.inMhJxQZlByMKfm.6rqihpNfm
+6	foxtrot	foxtrot	foxtrot@example.com	$2b$12$I9dgkaLBBAwTN1GwtSYsxOfb2BPIcMJbo001Vnx9k23aVjw5T90hy
+7	golf	golf	golf@example.com	$2b$12$DGJpt6Rj7q7L4bifMAM0ZeHsYcaOc7QneZA.styWwetvngFEMnkYG
+8	hotel	hotel	hotel@example.com	$2b$12$mCAsWvqpYNdXF84OpvlEEOU0eBpN/qK42jVuVsNjAYaqQ0LGrYqWG
+9	india	india	india@example.com	$2b$12$D.pR.NvTaOqt5LbH.NabROnf85eYXvmwXRuda4sI7jKb9yXyXxpmG
+10	juliet	juliet	juliet@example.com	$2b$12$pUPOQHpYdsMOJnztMc4avu4vDC7XWSsGE5Qf3v10CinwkuwQtdAjC
+11	kilo	kilo	kilo@example.com	$2b$12$WSXB9MCnvWgFsvdTlD8D5eWKDP63KIfCU48bZy1r4ceSCDNW6O0fm
+12	lima	lima	lima@example.com	$2b$12$Ume45G8sHHql6zV4fbyzteZZQ.MZjeBNEICYzhw51kVtawPpGm9sC
+13	mike	mike	mike@example.com	$2b$12$OQh9gWOWf.4SCNkh7oXLEuxutlAejirijVuDyK3B0S2kc4MjW0dBK
+14	november	november	november@example.com	$2b$12$zhKCz60YowENCg/LX5XVJ.6pr.FJbgN3SWG.3RImg.Ca4wHg.OMgC
+15	oscar	oscar	oscar@example.com	$2b$12$zkBh6AYyOwtY5X2NjJ/rAOjVws/WG97sDinxbj1s0MTLjF.CTjRz.
+3	charlie	charlie	charlie@example.com	$2b$12$LnPTKDn1LrGWwvuOg.mmv.kQg0FIIxjPNW4ukqY.24CIN7KWBDKzu
+16	papa	papa	papa@example.com	$2b$12$X/yRe3t1.zah5q53Ft1yquzkJoAL4htFszTLa8WxMhJw0j8oDb3NC
+17	quebec	quebec	quebec@example.com	$2b$12$UX7jcVA1bM6CBjvC9m3R3.21/GmwdkAJhFb3LNdXX9c.GOYRXpVj6
+18	romeo	romeo	romeo@example.com	$2b$12$WCquV60OMacFR/8Ad3tAheWhpSgVgkri0V7OoSR8uvUUNplWQJDLm
+19	sierra	sierra	sierra@example.com	$2b$12$EDfutNlNh4.xaJdRcDsq.OyumaBpWtmebqjqonEp5tFFWqVxiClSq
+20	tango	tango	tango@example.com	$2b$12$BWBA15OiS1C5RHQzVSYt1uX06SH6FKoHlFEIx7Iixk4T75UBIEuCa
+21	uniform	uniform	uniform@example.com	$2b$12$HoWcIg9uiwNZtYAJOa.6xepNHodFAr3dqq1ebFAMGTPLOftHnj1sK
+22	victor	victor	victor@example.com	$2b$12$p4mmrJdp382mrA.MXTLLtu3Y3TUy.LmkaXsGMPBtiXj./YEnSGrjG
+23	whiskey	whiskey	whiskey@example.com	$2b$12$zrqH6/yoYGUCrN5XRd9Wautm/z5cQYEpQfNVKIik.gDGePuBuX7rS
+24	x-ray	x-ray	x-ray@example.com	$2b$12$vaJ/ZBWGnS8VOHLI.9Hmn.oy9j1H0bgIXKFah.sfWXX6wYV6i/E4a
+25	yankee	yankee	yankee@example.com	$2b$12$.wa.IONmWEVBFQ.mTLyubu4SELpNeLFzhzN47DvhhFUXbsb87BU.C
+26	zulu	zulu	zulu@example.com	$2b$12$gZazj6UWAZ1SMx.LjMeXTOnxKrbYhPGWiq4bDfydkTiLbPtY0XzPW
+\.
+
+
+--
+-- Name: category_c_id_seq; Type: SEQUENCE SET; Schema: public; Owner: favh
+--
+
+SELECT pg_catalog.setval('public.category_c_id_seq', 1, false);
+
+
+--
+-- Name: file_f_id_seq; Type: SEQUENCE SET; Schema: public; Owner: favh
+--
+
+SELECT pg_catalog.setval('public.file_f_id_seq', 1, false);
+
+
+--
+-- Name: notification_n_id_seq; Type: SEQUENCE SET; Schema: public; Owner: favh
+--
+
+SELECT pg_catalog.setval('public.notification_n_id_seq', 1, false);
+
+
+--
+-- Name: reminder_r_id_seq; Type: SEQUENCE SET; Schema: public; Owner: favh
+--
+
+SELECT pg_catalog.setval('public.reminder_r_id_seq', 1, false);
+
+
+--
+-- Name: user_u_id_seq; Type: SEQUENCE SET; Schema: public; Owner: favh
+--
+
+SELECT pg_catalog.setval('public.user_u_id_seq', 26, true);
+
+
+--
+-- Name: category category_pkey; Type: CONSTRAINT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_pkey PRIMARY KEY (c_id);
+
+
+--
+-- Name: file file_pkey; Type: CONSTRAINT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.file
+    ADD CONSTRAINT file_pkey PRIMARY KEY (f_id);
+
+
+--
+-- Name: notification notification_pkey; Type: CONSTRAINT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.notification
+    ADD CONSTRAINT notification_pkey PRIMARY KEY (n_id);
+
+
+--
+-- Name: reminder reminder_pkey; Type: CONSTRAINT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.reminder
+    ADD CONSTRAINT reminder_pkey PRIMARY KEY (r_id);
+
+
+--
+-- Name: user user_pkey; Type: CONSTRAINT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public."user"
+    ADD CONSTRAINT user_pkey PRIMARY KEY (u_id);
+
+
+--
+-- Name: category category_reminder_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_reminder_id_fkey FOREIGN KEY (reminder_id) REFERENCES public.reminder(r_id);
+
+
+--
+-- Name: file file_reminder_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.file
+    ADD CONSTRAINT file_reminder_id_fkey FOREIGN KEY (reminder_id) REFERENCES public.reminder(r_id);
+
+
+--
+-- Name: notification notification_reminder_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.notification
+    ADD CONSTRAINT notification_reminder_id_fkey FOREIGN KEY (reminder_id) REFERENCES public.reminder(r_id);
+
+
+--
+-- Name: reminder reminder_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: favh
+--
+
+ALTER TABLE ONLY public.reminder
+    ADD CONSTRAINT reminder_user_id_fkey FOREIGN KEY (user_id) REFERENCES public."user"(u_id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+\unrestrict oqiHLvBN6G1tcaXOfg0XAfL3bonWbVlEX7kDmKfGeosktZlGauBA7FH9LrZ70Lj
+
